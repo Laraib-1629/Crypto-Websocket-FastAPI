@@ -230,7 +230,8 @@ function addLog(msg){
   if(l.children.length>100) l.removeChild(l.lastChild);
 }
 function connect(){
-  const ws=new WebSocket(`ws://${location.host}/ws`);
+  const protocol = location.protocol === "https:" ? "wss" : "ws";
+  const ws = new WebSocket(`${protocol}://${location.host}/ws`);
   ws.onopen=()=>{document.getElementById('dot').classList.add('on');document.getElementById('stxt').textContent='Connected';addLog('WebSocket connected')};
   ws.onclose=()=>{document.getElementById('dot').classList.remove('on');document.getElementById('stxt').textContent='Disconnected – reconnecting…';addLog('Disconnected');setTimeout(connect,3000)};
   ws.onmessage=(e)=>{const d=JSON.parse(e.data);upsertCard(d);addLog(`${d.symbol} $${parseFloat(d.last_price).toFixed(2)} (${d.change_pct>0?'+':''}${parseFloat(d.change_pct).toFixed(2)}%)`)};
