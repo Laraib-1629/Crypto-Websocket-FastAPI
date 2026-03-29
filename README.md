@@ -2,6 +2,12 @@
 
 Real-time BTC/ETH/BNB price streaming via Binance WebSocket → FastAPI server → clients.
 
+
+## Live Demo
+👉 https://crypto-websocket-fastapi.onrender.com/
+
+Open the link to see the live crypto dashboard.
+
 ## Architecture
 
 ```
@@ -49,8 +55,14 @@ docker compose up --build
 ## API Reference
 
 ### WebSocket
+
+**Local:**
 ```
 ws://localhost:8000/ws
+```
+**Production:**
+```
+wss://crypto-websocket-fastapi.onrender.com/ws
 ```
 
 ```json
@@ -76,13 +88,33 @@ ws://localhost:8000/ws
 # Install wscat
 npm install -g wscat
 
+# Local
 wscat -c ws://localhost:8000/ws
+
+# Production
+wscat -c wss://crypto-websocket-fastapi.onrender.com/ws
 ```
 
 ## Test the REST API
 
 ```bash
+# Local
 curl http://localhost:8000/price?symbol=ETHUSDT
-curl http://localhost:8000/prices
-curl http://localhost:8000/health
+
+# Production
+curl https://crypto-websocket-fastapi.onrender.com/price?symbol=ETHUSDT
 ```
+
+## 📌 Notes
+
+- Uses secure WebSocket (`wss://`) in production
+- Designed using producer-consumer pattern (asyncio.Queue)
+- Backend acts as both:
+  - WebSocket client (Binance)
+  - WebSocket server (clients)
+
+## 👨‍💻 Author
+
+**Laraib Ahmed**
+
+- GitHub: https://github.com/Laraib-1629
